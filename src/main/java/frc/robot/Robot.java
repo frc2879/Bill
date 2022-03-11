@@ -10,6 +10,8 @@
 
 package frc.robot;
 
+import javax.crypto.interfaces.PBEKey;
+
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.SPI;
@@ -19,7 +21,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Drivetrain;
-
+import frc.robot.subsystems.FlipperStopper;
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -28,7 +30,7 @@ import frc.robot.subsystems.Drivetrain;
  * project.
  */
 public class Robot extends TimedRobot {
-  
+  public static FlipperStopper SpinnyFlipper = new FlipperStopper();
   public static Drivetrain drive = new Drivetrain();
   public static OI oi;
   public static AHRS ahrs;
