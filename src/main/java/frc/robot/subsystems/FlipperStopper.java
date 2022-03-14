@@ -24,7 +24,7 @@ public class FlipperStopper extends Subsystem {
   ControlMode po = ControlMode.PercentOutput;
 
   CANSparkMax motor1 = new CANSparkMax(RobotMap.spinnerflipper, CANSparkMaxLowLevel.MotorType.kBrushless);
-
+ 
   float lockAngle;
 
   //frw.setIdleMode(IdleMode.kBrake);
@@ -32,11 +32,12 @@ public class FlipperStopper extends Subsystem {
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
+    motor1.restoreFactoryDefaults();
     // setDefaultCommand(new MySpecialCommand());
   }
 
   public void spin() {
-     motor1.set(0.5);
+     motor1.set(-0.75);
   }
 
 public void stop() {
