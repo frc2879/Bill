@@ -45,7 +45,7 @@ public class RobotMap {
   public static final double xDead=0.2;
   public static final double yDead=0.2;
   public static final double aDead=0.2;
-
+  public static final int spinnerflipper = 69;
 
 
 }

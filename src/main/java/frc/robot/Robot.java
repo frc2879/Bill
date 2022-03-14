@@ -151,10 +151,15 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     // System.out.println("teleop tick");
-
+    if (oi.getStickTrig()) {
+      SpinnyFlipper.spin();
+    } else {
+      SpinnyFlipper.stop();
+      
+    }
     yaw += Robot.ahrs.getRawGyroY() / 60;
     yaw = yaw % 360;
-
+  
     double motion[] = { 0, 0, 0 };
     double st = (1 - oi.getStickT()) / 2;
     double sx = oi.getStickX() * st;
