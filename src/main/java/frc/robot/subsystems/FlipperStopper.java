@@ -13,7 +13,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import frc.robot.RobotMap;
-
+import edu.wpi.first.wpilibj.DigitalInput;
 /**
  * Add your docs here.
  */
@@ -26,6 +26,8 @@ public class FlipperStopper extends Subsystem {
   CANSparkMax motor1 = new CANSparkMax(RobotMap.spinnerflipper, CANSparkMaxLowLevel.MotorType.kBrushless);
  
   float lockAngle;
+// Initializes a DigitalInput on DIO 0
+DigitalInput input = new DigitalInput(0);
 
   //frw.setIdleMode(IdleMode.kBrake);
 
@@ -38,6 +40,8 @@ public class FlipperStopper extends Subsystem {
 
   public void spin() {
      motor1.set(-0.75);
+     // Gets the value of the digital input.  Returns true if the circuit is open.
+input.get();
   }
 
 public void stop() {
