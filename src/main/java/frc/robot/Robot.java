@@ -152,11 +152,9 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     // System.out.println("teleop tick");
     if (oi.getStickTrig()) {
-      SpinnyFlipper.spin();
-    } else {
-      SpinnyFlipper.stop();
-      
+      SpinnyFlipper.spinTwice();
     }
+    
     yaw += Robot.ahrs.getRawGyroY() / 60;
     yaw = yaw % 360;
   
