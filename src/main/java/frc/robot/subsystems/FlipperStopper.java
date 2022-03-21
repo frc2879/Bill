@@ -22,7 +22,7 @@ public class FlipperStopper extends SubsystemBase {
   CANSparkMax motor1;
   //Initializes a DigitalInput on DIO 0
   DigitalInput input;
-  Counter counter = new Counter(input);
+  Counter counter;
 
   //frw.setIdleMode(IdleMode.kBrake);
 
@@ -30,7 +30,9 @@ public class FlipperStopper extends SubsystemBase {
     motor1 = new CANSparkMax(RobotMap.spinnerflipper, CANSparkMaxLowLevel.MotorType.kBrushless);
     motor1.restoreFactoryDefaults();
     input = new DigitalInput(0);
+    counter = new Counter(input);
     counter.reset();
+    
   }
 
   public void resetCounter() {
@@ -42,7 +44,7 @@ public class FlipperStopper extends SubsystemBase {
   }
 
   public void resetPosition() {
-    while(!input.get()) {
+    while(input.get()) {
       motor1.set(0.4);
     }
     motor1.set(0);

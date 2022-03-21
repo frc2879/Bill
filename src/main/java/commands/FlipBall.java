@@ -25,10 +25,11 @@ public class FlipBall extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         flipper.stop();
+        flipper.resetPosition();
     }
 
     @Override
     public boolean isFinished() {
-        return flipper.getSpinCount() >= 2;
+        return flipper.getSpinCount() >= 3;
     }
 }
