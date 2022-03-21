@@ -7,80 +7,52 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import frc.robot.RobotMap;
+import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DigitalInput;
 /**
- * Add your docs here.
+ * The thing which stops the ball, and then flips the ball out...
  */
-public class FlipperStopper extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
+public class FlipperStopper extends SubsystemBase {
 
-  // ControlMode po = ControlMode.PercentOutput;
-
-  CANSparkMax motor1 = new CANSparkMax(RobotMap.spinnerflipper, CANSparkMaxLowLevel.MotorType.kBrushless);
- 
-  // float lockAngle;
-  
+  CANSparkMax motor1;
   //Initializes a DigitalInput on DIO 0
-  DigitalInput input = new DigitalInput(0);
+  DigitalInput input;
+  Counter counter = new Counter(input);
 
   //frw.setIdleMode(IdleMode.kBrake);
 
-  private boolean alreadySpinning = false;
-
-  @Override
-  public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
+  public FlipperStopper() {
+    motor1 = new CANSparkMax(RobotMap.spinnerflipper, CANSparkMaxLowLevel.MotorType.kBrushless);
     motor1.restoreFactoryDefaults();
+    input = new DigitalInput(0);
+    counter.reset();
   }
 
-  /**
-   * Spins the flipper around twice, in theory...
-   */
-  public void spinTwice() {
-    this.resetPosition();
-    if(!this.alreadySpinning){
-      this.alreadySpinning = true;
-      int spinCount = 0;
-      motor1.set(-0.60);
-      do {
-        boolean lastReading = input.get();
-        if(input.get() != lastReading)
-          spinCount++;
-      } while(spinCount < 2);
-      motor1.set(0);
-      this.alreadySpinning = false;
-    }
+  public void resetCounter() {
+    counter.reset();
+  }
+
+  public int getSpinCount() {
+    return counter.get();
   }
 
   public void resetPosition() {
     while(!input.get()) {
-      motor1.set(0.45);
+      motor1.set(0.4);
     }
     motor1.set(0);
   }
 
   public void spin() {
      motor1.set(-0.75);
-     // Gets the value of the digital input.  Returns true if the circuit is open.
-     input.get();
   }
 
-public void stop() {
-  motor1.stopMotor();
-}
-
-
-
-
-
-
-
-
+  public void stop() {
+    motor1.stopMotor();
+  }
 }

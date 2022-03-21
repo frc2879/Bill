@@ -10,7 +10,6 @@
 
 package frc.robot;
 
-import javax.crypto.interfaces.PBEKey;
 
 import com.kauailabs.navx.frc.AHRS;
 
@@ -20,8 +19,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.FlipperStopper;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -30,25 +28,12 @@ import frc.robot.subsystems.FlipperStopper;
  * project.
  */
 public class Robot extends TimedRobot {
-  public static FlipperStopper SpinnyFlipper = new FlipperStopper();
-  public static Drivetrain drive = new Drivetrain();
-  public static OI oi;
-  public static AHRS ahrs;
+  private RobotContainer rc;
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
-  public int locked = 0;
-  public static double yaw = 0;
-
   public Robot(){
-    try {
-      /* Communicate w/navX-MXP via the MXP SPI Bus.                                     */
-      /* Alternatively:  I2C.Port.kMXP, SerialPort.Port.kMXP or SerialPort.Port.kUSB     */
-      /* See http://navx-mxp.kauailabs.com/guidance/selecting-an-interface/ for details. */
-      ahrs = new AHRS(SPI.Port.kMXP); 
-    } catch (RuntimeException ex ) {
-        //DriverStation.reportError("Error instantiating navX-MXP:  " + ex.getMessage(), true);
-    }
+    this.rc = new RobotContainer();
   }
 
 
@@ -58,7 +43,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    oi = new OI();
     //m_chooser.setDefaultOption("Default Auto", new ExampleCommand());
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
@@ -74,6 +58,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
+    // commands, running already-scheduled commands, removing finished or interrupted commands,
+    // and running subsystem periodic() methods.  This must be called from the robot's periodic
+    // block in order for anything in the Command-based framework to work.
+    CommandScheduler.getInstance().run();
   }
 
   /**
@@ -123,14 +112,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-    /*double st = oi.getStickT()/10;
-    drive.setEachWheel(st,st,st,st);
-    */
-    //mecanumMove(double x,double y,double a)
-
-
-
-
   }
 
   @Override
@@ -142,7 +123,6 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    yaw = 0;
   }
 
   /**
@@ -151,56 +131,20 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     // System.out.println("teleop tick");
-    if (oi.getStickTrig()) {
-      SpinnyFlipper.spinTwice();
-    }
-    
-    yaw += Robot.ahrs.getRawGyroY() / 60;
-    yaw = yaw % 360;
-  
-    double motion[] = { 0, 0, 0 };
-    double st = (1 - oi.getStickT()) / 2;
-    double sx = oi.getStickX() * st;
-    double sy = oi.getStickY() * st;
-    double sa = oi.getStickA() * st;
-
-
-      motion[0] = sx;
-      motion[1] = sy;
-      motion[2] = sa;
-      drive.mecanumMove(sx, sy, sa);
-
-    
-
-    if (oi.getStickHat() == -1) {
-      locked = 0;
-    } else {
-      if (locked == 0) {
-        locked = 1;
-        drive.setLock();
-      } else {
-        locked = 2;
-      }
-      double m = st / 2;
-      double a = Math.PI * oi.getStickHat() / 180;
-      //System.out.println(Math.sin(a) + " , " + Math.cos(a));
-      drive.mecanumMove(m * Math.sin(a), m * Math.cos(a), drive.lock(-0.01));
-    }
-
   }
 
-  public static double getYaw() {
-    return yaw;
+
+  @Override
+  public void testInit() {
+    // Cancels all running commands at the start of test mode.
+    CommandScheduler.getInstance().cancelAll();
   }
+
   /**
    * This function is called periodically during test mode.
    */
   @Override
   public void testPeriodic() {
   }
-  /*
-  double st = oi.getStickT()/10;
-  drive.setEachWheel(st,st,st,st);
-*/
 
 }
