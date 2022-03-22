@@ -1,10 +1,13 @@
 package frc.robot;
 
+import commands.Down;
 import commands.FlipBall;
 import commands.LockedStrafeCommand;
 import commands.MecanumDriveCommand;
+import commands.UPS;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.subsystems.Climberarms;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.FlipperStopper;
 
@@ -16,7 +19,7 @@ public class RobotContainer {
     private final FlipperStopper flipper = new FlipperStopper();
     public static Drivetrain drive = new Drivetrain();
     public final OI oi = new OI();
-
+    public final Climberarms arms = new Climberarms();
     public RobotContainer() {
         // Configure the button bindings
         configureButtonBindings();
@@ -29,9 +32,14 @@ public class RobotContainer {
         // Buttons
         JoystickButton trigger = new JoystickButton(oi.getJoystick(), 1);
         Trigger povStickTrigger = new Trigger(() -> { return oi.getJoystick().getPOV() >= 0; });
+        JoystickButton armsup = new JoystickButton(oi.getJoystick(), 5);
+        JoystickButton armsdown = new JoystickButton(oi.getJoystick(), 3);
 
+        
         // Bindings
         trigger.whenPressed(new FlipBall(flipper));
         povStickTrigger.whenActive(new LockedStrafeCommand(drive, oi::getStickHat, oi::getStickT));
+        armsup.whileHeld(new UPS(arms));
+        armsdown.whileHeld(new Down(arms));
     }
 }
