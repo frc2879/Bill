@@ -16,6 +16,7 @@ public class Climberarms extends SubsystemBase {
   CANSparkMax motor2;
   DigitalInput input1;
   DigitalInput input2;
+  DigitalInput input4;
 
   /** Creates a new Climberarms. */
   public Climberarms() {
@@ -25,6 +26,7 @@ public class Climberarms extends SubsystemBase {
     motor2.restoreFactoryDefaults();
     input1 = new DigitalInput(RobotMap.arm1switch);
     input2 = new DigitalInput(RobotMap.arm2switch);
+    input4 = new DigitalInput(RobotMap.sensor1);
   }
 
   @Override
@@ -50,18 +52,20 @@ public class Climberarms extends SubsystemBase {
   public void up1() {
     motor1.set(0.25);
   }
-
+public boolean isarm1up(){
+return input4.get();
+}
   public void up2() {
     motor2.set(0.25);
   }
 
   public void down1() {
 
-    if (!armdown1()) {
+    // if (!armdown1()) {
       motor1.set(-0.25);
-    } else {
-      stop1();
-    }
+    // } else {
+      // stop1();
+    // }
   }
 
   public void down2() {
@@ -85,6 +89,7 @@ public class Climberarms extends SubsystemBase {
     return input2.get();
   }
 
+
   public void allstop() {
     motor1.stopMotor();
     motor2.stopMotor();
@@ -102,4 +107,5 @@ public class Climberarms extends SubsystemBase {
     motor1.set(-0.25);
     motor2.set(-0.25);
   }
+  
 }

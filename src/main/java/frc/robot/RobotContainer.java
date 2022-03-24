@@ -4,6 +4,7 @@ import commands.Down;
 import commands.FlipBall;
 import commands.LockedStrafeCommand;
 import commands.MecanumDriveCommand;
+import commands.Raisearm1;
 import commands.UPS;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -34,12 +35,13 @@ public class RobotContainer {
         Trigger povStickTrigger = new Trigger(() -> { return oi.getJoystick().getPOV() >= 0; });
         JoystickButton armsup = new JoystickButton(oi.getJoystick(), 5);
         JoystickButton armsdown = new JoystickButton(oi.getJoystick(), 3);
-
+        JoystickButton raisearm1 = new JoystickButton(oi.getJoystick(),6);
         
         // Bindings
         trigger.whenPressed(new FlipBall(flipper));
         povStickTrigger.whenActive(new LockedStrafeCommand(drive, oi::getStickHat, oi::getStickT));
         armsup.whileHeld(new UPS(arms));
         armsdown.whileHeld(new Down(arms));
+        raisearm1.whenPressed(new Raisearm1(arms));
     }
 }

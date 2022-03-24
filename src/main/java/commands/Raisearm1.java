@@ -7,13 +7,15 @@ package commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Climberarms;
 
-public class Down extends CommandBase {
-  /** Creates a new UPS. */
-  Climberarms arms;
-  public Down(Climberarms m) {
-    this.arms = m;
+
+public class Raisearm1 extends CommandBase {
+ Climberarms arm1;
+  /** Creates a new Raisearm1. */
+  public Raisearm1(Climberarms m1) {
+  
+    this.arm1= m1;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(arms);
+    addRequirements(arm1);
   }
 
   // Called when the command is initially scheduled.
@@ -23,18 +25,18 @@ public class Down extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    arms.down1();
+   arm1.up1(); 
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    arms.stop1();
+    arm1.stop1();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return arm1.isarm1up();
   }
 }
