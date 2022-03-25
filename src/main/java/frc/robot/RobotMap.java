@@ -50,6 +50,8 @@ public class RobotMap {
   public static final int arm2switch = 2;
   public static final int arm1motor = 14;
   public static final int arm2motor = 15; 
-  public static final int sensor1 = 5;
+  public static final int arm1ExtensionSensor = 5;
+  public static final int arm2ExtensionSensor = 6;
+
   }
 

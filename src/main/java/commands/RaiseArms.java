@@ -8,14 +8,14 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Climberarms;
 
 
-public class Raisearm1 extends CommandBase {
- Climberarms arm1;
+public class RaiseArms extends CommandBase {
+ Climberarms arms;
   /** Creates a new Raisearm1. */
-  public Raisearm1(Climberarms m1) {
+  public RaiseArms(Climberarms m1) {
   
-    this.arm1= m1;
+    this.arms= m1;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(arm1);
+    addRequirements(arms);
   }
 
   // Called when the command is initially scheduled.
@@ -25,18 +25,18 @@ public class Raisearm1 extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-   arm1.up1(); 
+    arms.allup();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    arm1.stop1();
+    arms.allstop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return arm1.isarm1up();
+    return arms.bothArmsUp();
   }
 }

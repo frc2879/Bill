@@ -4,7 +4,7 @@ import commands.Down;
 import commands.FlipBall;
 import commands.LockedStrafeCommand;
 import commands.MecanumDriveCommand;
-import commands.Raisearm1;
+import commands.RaiseArms;
 import commands.UPS;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -42,6 +42,6 @@ public class RobotContainer {
         povStickTrigger.whenActive(new LockedStrafeCommand(drive, oi::getStickHat, oi::getStickT));
         armsup.whileHeld(new UPS(arms));
         armsdown.whileHeld(new Down(arms));
-        raisearm1.whenPressed(new Raisearm1(arms));
+        raisearm1.whenPressed(new RaiseArms(arms));
     }
 }
