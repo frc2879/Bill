@@ -23,6 +23,8 @@ public class Climberarms extends SubsystemBase {
   DigitalInput input2;
   DigitalInput arm1ExtensionSwitch;
   DigitalInput arm2ExtensionSwitch;
+  DigitalInput arm1hooksensor;
+  DigitalInput arm2hooksensor;
 
   /** Creates a new Climberarms. */
   public Climberarms() {
@@ -40,7 +42,8 @@ public class Climberarms extends SubsystemBase {
     input2 = new DigitalInput(RobotMap.arm2switch);
     arm1ExtensionSwitch = new DigitalInput(RobotMap.arm1ExtensionSensor);
     arm2ExtensionSwitch = new DigitalInput(RobotMap.arm2ExtensionSensor);
-
+    arm1hooksensor = new DigitalInput(RobotMap.arm1hooksensor);
+    arm2hooksensor = new DigitalInput(RobotMap.arm2hooksensor);
   }
 
   @Override
@@ -80,7 +83,7 @@ public class Climberarms extends SubsystemBase {
   public boolean isArm2Up() {
     return arm2ExtensionSwitch.get();
   }
-
+  
   public boolean anyArmUp() {
     return isArm2Up() || isArm1Up();
   }
@@ -96,7 +99,13 @@ public class Climberarms extends SubsystemBase {
   public void down2() {
     motor2.set(-0.25);
   }
+public boolean anyarmdown(){
+  return m1Limit.isPressed() || m2Limit.isPressed();
+}
+public boolean hooked(){
+  return !arm1hooksensor.get() && !arm2hooksensor.get();
 
+}
   public boolean armdown1() {
     return input1.get();
   }

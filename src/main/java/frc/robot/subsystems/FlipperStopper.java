@@ -51,7 +51,7 @@ public class FlipperStopper extends SubsystemBase {
   }
 
   public void spin() {
-     motor1.set(-0.8);
+     motor1.set(-0.9);
   }
 
   public void stop() {

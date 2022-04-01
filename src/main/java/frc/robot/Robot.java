@@ -13,13 +13,16 @@ package frc.robot;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import commands.Autodrivebackwards;
+import commands.FlipBall;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -30,6 +33,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 public class Robot extends TimedRobot {
   private RobotContainer rc;
   Command m_autonomousCommand;
+  CommandScheduler sc = CommandScheduler.getInstance();
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   public Robot(){
@@ -62,7 +66,7 @@ public class Robot extends TimedRobot {
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
-    CommandScheduler.getInstance().run();
+    sc.run();
   }
 
   /**
@@ -92,7 +96,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_chooser.getSelected();
+    SequentialCommandGroup group = new SequentialCommandGroup();
+    group.andThen(new FlipBall(rc.flipper))
+    .andThen(new Autodrivebackwards(RobotContainer.drive));
 
     /**
      * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -100,11 +106,7 @@ public class Robot extends TimedRobot {
      * = new MyAutoCommand(); break; case "Default Auto": default:
      * autonomousCommand = new ExampleCommand(); break; }
      **/
-
-    // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.start();
-    }
+sc.schedule(group);
   }
 
   /**
@@ -130,6 +132,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+
     // System.out.println("teleop tick");
   }
 

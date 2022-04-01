@@ -1,5 +1,6 @@
 package frc.robot;
 
+import commands.Allarmsdown;
 import commands.Down;
 import commands.FlipBall;
 import commands.LockedStrafeCommand;
@@ -17,7 +18,7 @@ import frc.robot.subsystems.FlipperStopper;
  * to be used in {@link Robot}.
  */
 public class RobotContainer {
-    private final FlipperStopper flipper = new FlipperStopper();
+    public final FlipperStopper flipper = new FlipperStopper();
     public static Drivetrain drive = new Drivetrain();
     public final OI oi = new OI();
     public final Climberarms arms = new Climberarms();
@@ -36,12 +37,13 @@ public class RobotContainer {
         JoystickButton armsup = new JoystickButton(oi.getJoystick(), 5);
         JoystickButton armsdown = new JoystickButton(oi.getJoystick(), 3);
         JoystickButton raisearm1 = new JoystickButton(oi.getJoystick(),6);
-        
+        JoystickButton Allarmsdown = new JoystickButton(oi.getJoystick(), 4);
         // Bindings
         trigger.whenPressed(new FlipBall(flipper));
         povStickTrigger.whenActive(new LockedStrafeCommand(drive, oi::getStickHat, oi::getStickT));
         armsup.whileHeld(new UPS(arms));
         armsdown.whileHeld(new Down(arms));
         raisearm1.whenPressed(new RaiseArms(arms));
+        Allarmsdown.whenPressed(new Allarmsdown(arms));
     }
 }
