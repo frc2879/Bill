@@ -54,5 +54,5 @@ public class RobotMap {
   public static final int arm2ExtensionSensor = 6;
   public static final int arm1hooksensor = 7;
   public static final int arm2hooksensor = 8; 
-  }
+}
 

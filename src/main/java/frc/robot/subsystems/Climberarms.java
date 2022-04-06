@@ -16,9 +16,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Climberarms extends SubsystemBase {
   CANSparkMax motor1;
-  SparkMaxLimitSwitch m1Limit;
+  SparkMaxLimitSwitch m1LimitR;
+  SparkMaxLimitSwitch m1LimitF;
   CANSparkMax motor2;
-  SparkMaxLimitSwitch m2Limit;
+  SparkMaxLimitSwitch m2LimitR;
+  SparkMaxLimitSwitch m2LimitF;
   DigitalInput input1;
   DigitalInput input2;
   DigitalInput arm1ExtensionSwitch;
@@ -34,10 +36,14 @@ public class Climberarms extends SubsystemBase {
     motor2.restoreFactoryDefaults();
     motor1.setIdleMode(IdleMode.kBrake);
     motor2.setIdleMode(IdleMode.kBrake);
-    m1Limit = motor1.getReverseLimitSwitch(Type.kNormallyOpen);
-    m2Limit = motor2.getReverseLimitSwitch(Type.kNormallyOpen);
-    m1Limit.enableLimitSwitch(true);
-    m2Limit.enableLimitSwitch(true);
+    m1LimitR = motor1.getReverseLimitSwitch(Type.kNormallyOpen);
+    m2LimitR = motor2.getReverseLimitSwitch(Type.kNormallyOpen);
+    m1LimitF = motor1.getForwardLimitSwitch(Type.kNormallyOpen);
+    m2LimitF = motor2.getForwardLimitSwitch(Type.kNormallyOpen);
+    m1LimitR.enableLimitSwitch(true);
+    m1LimitF.enableLimitSwitch(true);
+    m2LimitR.enableLimitSwitch(true);
+    m2LimitF.enableLimitSwitch(true);
     input1 = new DigitalInput(RobotMap.arm1switch);
     input2 = new DigitalInput(RobotMap.arm2switch);
     arm1ExtensionSwitch = new DigitalInput(RobotMap.arm1ExtensionSensor);
@@ -100,7 +106,7 @@ public class Climberarms extends SubsystemBase {
     motor2.set(-0.25);
   }
 public boolean anyarmdown(){
-  return m1Limit.isPressed() || m2Limit.isPressed();
+  return m1LimitR.isPressed() || m2LimitR.isPressed();
 }
 public boolean hooked(){
   return !arm1hooksensor.get() && !arm2hooksensor.get();
